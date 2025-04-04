@@ -19,6 +19,8 @@
     "@hookform/resolvers": "^5.0.1",
     "@mui/material": "^7.0.1",
     "@tailwindcss/vite": "^4.1.1",
+    "@tanstack/react-query": "^5.71.5",
+    "axios": "^1.8.4",
     "chat_app": "file:",
     "google-libphonenumber": "^3.2.40",
     "react": "^19.0.0",
