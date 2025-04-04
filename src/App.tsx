@@ -1,22 +1,27 @@
 import { Route, Routes } from 'react-router-dom'
-import NavBar from './components/NavBar'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
-import SettingPage from './pages/SettingPage'
-import ProfilePage from './pages/ProfilePage'
 import SignUpPage from './pages/SignUpPage'
+import { QueryClientProvider } from '@tanstack/react-query'
+import queryClient from './services/queryClient'
+import { useAuthStore } from './store/useAuthStore'
+import NavbarLayout from './layouts/NavbarLayout'
 
 function App() {
+  const { authUser } = useAuthStore()
   return (
     <>
-      {/* <NavBar></NavBar> */}
-      <Routes>
-        <Route path='/' element={<HomePage />} />
-        <Route path='/signup' element={<SignUpPage />} />
-        <Route path='/login' element={<LoginPage />} />
-        <Route path='/settings' element={<SettingPage />} />
-        <Route path='/profile' element={<ProfilePage />} />
-      </Routes>
+      <QueryClientProvider client={queryClient}>
+        <Routes>
+          <Route path='/' element={<NavbarLayout />}>
+            <Route index element={<HomePage />} />
+          </Route>
+          {/* <Route path='/settings' element={<SettingPage />} />
+          <Route path='/profile' element={<ProfilePage />} /> */}
+          <Route path='/login' element={<LoginPage />} />
+          <Route path='/signup' element={<SignUpPage />} />
+        </Routes>
+      </QueryClientProvider>
     </>
   )
 }
