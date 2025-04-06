@@ -1,13 +1,11 @@
-import React from 'react'
-
-interface Props {
+interface SettingPageProps {
   propName?: string
 }
 
-const SettingPage: React.FC<Props> = ({ propName }) => {
+const SettingPage: React.FC<SettingPageProps> = ({ propName }) => {
   return (
     <div>
-      <h1>SettingPage</h1>
+      <h1>propName</h1>
     </div>
   )
 }

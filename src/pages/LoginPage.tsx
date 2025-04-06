@@ -5,7 +5,8 @@ import { loginSchema } from '~/schema/LoginSchema'
 import { z } from 'zod'
 import { useState } from 'react'
 import CommonButton from '~/components/CommonButton'
-import { Link } from 'react-router-dom'
+import UnderlineLink from '~/components/UnderlineLink'
+import InputField from '~/components/InputField'
 
 type LoginInput = z.infer<typeof loginSchema>
 
@@ -25,7 +26,11 @@ async function loginUser(data: LoginInput) {
   return { success: true }
 }
 
-export default function LoginPage() {
+interface LoginPageProps {
+  propName?: string
+}
+
+const LoginPage: React.FC<LoginPageProps> = ({ propName }) => {
   const {
     register,
     handleSubmit,
@@ -48,8 +53,11 @@ export default function LoginPage() {
         console.log('Đăng nhập thành công:', data)
         // Thêm logic chuyển hướng, ví dụ: window.location.href = '/dashboard';
       }
-    } catch (error) {
-      setLoginError('Thông tin đăng nhập không hợp lệ')
+    } catch (error: unknown) {
+      const err = error as Error
+      setLoginError(err.message)
+      console.log('error while login', err)
+      throw err
     }
   }
   const { watch } = useForm<LoginInput>({ resolver: zodResolver(loginSchema) })
@@ -64,28 +72,8 @@ export default function LoginPage() {
             Kết nối với những người bạn yêu quý.
           </label>
           <div className='flex flex-col items-start gap-1 max-w-80 w-full'>
-            <input
-              {...register('identifier')}
-              type='text'
-              required
-              placeholder='Email hoặc số điện thoại'
-              aria-label='Email hoặc số điện thoại'
-              className='h-10 w-full rounded-md border border-gray-200 pl-3.5 text-base text-gray-900
-              focus:outline-2 focus:-outline-offset-1 focus:outline-black mb-2'
-            />
-
-            {errors.identifier && <p className='text-sm text-red-800'>{errors.identifier.message}</p>}
-
-            <input
-              {...register('password')}
-              type='password'
-              required
-              placeholder='Mật khẩu'
-              aria-label='Mật khẩu'
-              className='h-10 w-full rounded-md border border-gray-200 pl-3.5 text-base text-gray-900
-              focus:outline-2 focus:-outline-offset-1 focus:outline-black'
-            />
-            {errors.password && <p className='text-sm text-red-800'>{errors.password.message}</p>}
+            <InputField name='identifier' type='text' placeholder='Email hoặc số điện thoại' />
+            <InputField name='password' type='password' placeholder='Mật khẩu' />
           </div>
           {loginError && <div className='text-sm text-red-800'>{loginError}</div>}
           <CommonButton
@@ -98,31 +86,20 @@ export default function LoginPage() {
         {/* todo  */}
         <label className='flex flex-row items-center gap-2 mt-4'>
           <input type='checkbox' className='h-4 w-4' />
-          <span className='text-gray-400'>Ghi nhớ đăng nhập</span>
+          <span className='text-gray-500'>Ghi nhớ đăng nhập</span>
         </label>
       </div>
       <footer className='mb-[20px] absolute bottom-0 w-full'>
         <div className='flex justify-center space-x-6 text-sm'>
-          <Link to='/' className='hover:underline font-normal  text-base'>
-            Chưa dùng Facebook?
-          </Link>
-          <Link to='/' className='hover:underline font-bold  text-base'>
-            Quên mật khẩu
-          </Link>
-          <Link to='/' className='hover:underline font-normal  text-base'>
-            Chính sách quyền riêng tư
-          </Link>
-          <Link to='/' className='hover:underline font-normal  text-base'>
-            Điều khoản
-          </Link>
-          <Link to='/' className='hover:underline font-normal  text-base'>
-            Chính sách cookie
-          </Link>
-          <Link to='/' className='hover:underline font-normal  text-base '>
-            © Meta 2025
-          </Link>
+          <UnderlineLink label='Chưa dùng Facebook' />
+          <UnderlineLink bold label='Quên mật khẩu' />
+          <UnderlineLink label='Chính sách quyền riêng tư' />
+          <UnderlineLink label='Điều khoản' />
+          <UnderlineLink label='Chính sách cookie' />
+          <UnderlineLink label='© Meta 2025' />
         </div>
       </footer>
     </div>
   )
 }
+export default LoginPage

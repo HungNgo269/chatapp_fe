@@ -1,13 +1,11 @@
-import React from 'react'
-
-interface Props {
+interface ProfilePageProps {
   propName?: string
 }
 
-const ProfilePage: React.FC<Props> = ({ propName }) => {
+const ProfilePage: React.FC<ProfilePageProps> = ({ propName }) => {
   return (
     <div>
-      <h1>ProfilePage</h1>
+      <h1>propName</h1>
     </div>
   )
 }
