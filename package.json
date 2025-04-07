@@ -23,6 +23,7 @@
     "axios": "^1.8.4",
     "chat_app": "file:",
     "google-libphonenumber": "^3.2.40",
+    "js-cookie": "^3.0.5",
     "lucide-react": "^0.487.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -36,6 +37,7 @@
   "devDependencies": {
     "@eslint/js": "^9.21.0",
     "@types/google-libphonenumber": "^7.4.30",
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^22.13.12",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",

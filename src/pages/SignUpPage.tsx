@@ -1,21 +1,18 @@
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import facebook from '~/assets/image/icon/facebook_text.svg'
 import CommonButton from '~/components/CommonButton'
 import InputField from '~/components/InputField'
 import UnderlineLink from '~/components/UnderlineLink'
 import { signupSchema } from '~/schema/SignUpSchema'
-
+import authAPi from '~/services/auth'
 type SignupInput = z.infer<typeof signupSchema>
 
-async function signupUser(data: SignupInput) {
-  await new Promise((resolve) => setTimeout(resolve, 1000))
-  return { success: true }
-}
-
 const SignUpPage: React.FC = () => {
+  const navigate = useNavigate()
+
   const methods = useForm<SignupInput>({
     resolver: zodResolver(signupSchema),
     mode: 'onChange',
@@ -28,9 +25,9 @@ const SignUpPage: React.FC = () => {
 
   const onSubmit = async (data: SignupInput) => {
     try {
-      const result = await signupUser(data)
-      if (result.success) {
-        alert('Đăng ký thành công!')
+      const result = await authAPi.signup(data)
+      if (result.status === 200) {
+        navigate('/')
       }
     } catch (error: unknown) {
       const err = error as Error
@@ -40,10 +37,10 @@ const SignUpPage: React.FC = () => {
   }
 
   return (
-    <div className='h-screen w-full flex flex-col justify-center items-center'>
-      <div className='h-fit w-full flex flex-col justify-center items-center relative'>
+    <div className='h-screen w-full flex flex-col justify-center items-center '>
+      <div className='h-fit w-full flex flex-col justify-center items-center relative bg-[#f0f2f5]'>
         <img src={facebook} className='w-fit h-10 sm:w-fit sm:h-16 mb-10' alt='Facebook Logo' />
-        <div className='max-w-96 shadow-sm'>
+        <div className='max-w-96 shadow-2xl rounded-2xl '>
           <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4 justify-center items-center w-full'>
               <div className='flex flex-col justify-center items-center w-full border-b-1 border-gray-400 px-4 py-2.5'>
@@ -54,7 +51,7 @@ const SignUpPage: React.FC = () => {
               <div className='flex flex-col gap-4 w-full p-4'>
                 <div className='flex flex-row gap-4'>
                   <div>
-                    <InputField name='last_name' placeholder='Họ' />
+                    <InputField size='h-8' name='last_name' placeholder='Họ' />
                     {errors.last_name && <span className='text-red-500 text-xs'>{errors.last_name.message}</span>}
                   </div>
                   <div>
@@ -94,7 +91,7 @@ const SignUpPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className='flex flex-col justify-center items-center w-full p-4 text-gray-500 text-xs text-wrap'>
+              <div className='flex flex-col justify-center items-center w-full pb-4 px-4 text-gray-500 text-xs text-wrap'>
                 <span>
                   Những người dùng dịch vụ của chúng tôi có thể đã tải thông tin liên hệ của bạn lên Facebook.
                   <UnderlineLink size='xs' label=' Tìm hiểu thêm.' color='blue' />
@@ -120,7 +117,7 @@ const SignUpPage: React.FC = () => {
               </div>
 
               <div className='pb-6'>
-                <Link to='/'>
+                <Link to='/login'>
                   <span className='text-lg text-blue-500'>Bạn đã có tài khoản ư?</span>
                 </Link>
               </div>
