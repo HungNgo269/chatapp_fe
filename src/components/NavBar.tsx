@@ -1,15 +1,13 @@
-import React from 'react'
-
-interface Props {
+interface NabBarProps {
   propName?: string
 }
 
-const NavBar: React.FC<Props> = ({ propName }) => {
+const NabBar: React.FC<NabBarProps> = ({ propName }) => {
   return (
     <div>
-      <h1>NavBar</h1>
+      <h1>propName</h1>
     </div>
   )
 }
 
-export default NavBar
+export default NabBar
