@@ -14,24 +14,22 @@ function App() {
     checkAuth()
   }, [checkAuth])
   console.log(authUser)
-  if (isCheckingAuth && !authUser) {
-    return (
-      <div className='h-screen flex items-center justify-center'>
-        <Loader className='size-10 animate-spin'></Loader>
-      </div>
-    )
-  }
+  // if (isCheckingAuth && !authUser) {
+  //   return (
+  //     <div className='h-screen flex items-center justify-center'>
+  //       <Loader className='size-10 animate-spin'></Loader>
+  //     </div>
+  //   )
+  // }
   return (
     <>
       <QueryClientProvider client={queryClient}>
         <Routes>
           <Route path='/' element={<NavbarLayout />}>
-            <Route index element={authUser ? <HomePage /> : <Navigate to='/login'></Navigate>} />
+            <Route index element={authUser ? <HomePage /> : <Navigate to='/login' />} />
           </Route>
-          {/* <Route path='/settings' element={<SettingPage />} />
-          <Route path='/profile' element={<ProfilePage />} /> */}
-          <Route path='/login' element={!authUser ? <LoginPage></LoginPage> : <Navigate to='/login'></Navigate>} />
-          <Route path='/signup' element={!authUser ? <SignUpPage></SignUpPage> : <Navigate to='/signup'></Navigate>} />
+          <Route path='/login' element={!authUser ? <LoginPage /> : <Navigate to='/' />} />
+          <Route path='/signup' element={!authUser ? <SignUpPage /> : <Navigate to='/' />} />
         </Routes>
       </QueryClientProvider>
     </>
