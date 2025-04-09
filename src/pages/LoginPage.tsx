@@ -7,9 +7,8 @@ import { useState } from 'react'
 import CommonButton from '~/components/CommonButton'
 import UnderlineLink from '~/components/UnderlineLink'
 import InputField from '~/components/InputField'
-import authAPi from '~/services/auth'
 import { useNavigate } from 'react-router-dom'
-import Cookies from 'js-cookie'
+import { useAuthStore } from '~/store/useAuthStore'
 type LoginInput = z.infer<typeof loginSchema>
 
 const LoginPage = () => {
@@ -27,15 +26,13 @@ const LoginPage = () => {
   } = methods
   const navigate = useNavigate()
   const [loginError, setLoginError] = useState<string | null>(null)
-
+  const login = useAuthStore((state) => state.login)
   const onSubmit = async (data: LoginInput) => {
     try {
-      const response = await authAPi.login(data)
+      const response = await login(data)
       console.log(response)
       if (response) {
         console.log('Đăng nhập thành công:', data)
-        const token = Cookies.get('accessToken')
-        console.log(token)
         navigate('/')
       }
     } catch (error: unknown) {

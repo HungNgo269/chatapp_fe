@@ -8,10 +8,6 @@ const phoneSchema = z.string().refine(
       const phoneNumber = phoneUtil.parse(number)
       return phoneUtil.isValidNumber(phoneNumber)
     } catch (error) {
-      // Chỉ log lỗi trong môi trường development
-      if (process.env.NODE_ENV === 'development') {
-        console.error('Lỗi phân tích số điện thoại:', error)
-      }
       return false
     }
   },

@@ -1,49 +1,108 @@
 import { create } from 'zustand'
-import apiConfig from '~/services/apiConfig'
+import { persist } from 'zustand/middleware'
 import toast from 'react-hot-toast'
 import IUser from '~/types/user'
-import authAPi from '~/services/auth'
+import authAPI from '~/services/auth'
+
+interface LoginCredentials {
+  identifier: string
+  password: string
+}
+
 interface AuthState {
-  authUser: null
+  authUser: IUser | null
+  accessToken: string | null
   iSigningUp: boolean
   isLoggingIn: boolean
   isUpdatingProfile: boolean
   isCheckingAuth: boolean
   checkAuth: () => Promise<void>
+  refreshToken: () => Promise<string>
+  login: (credentials: LoginCredentials) => Promise<void>
+  signup: (user: any) => Promise<void>
+  logout: () => Promise<void>
 }
-export const useAuthStore = create<AuthState>((set) => ({
-  authUser: null,
-  iSigningUp: false,
-  isLoggingIn: false,
-  isUpdatingProfile: false,
-  isCheckingAuth: true,
-  checkAuth: async () => {
-    try {
-      const res = await apiConfig.get('auth/check')
-      set({ authUser: res.data })
-    } catch (error: unknown) {
-      const err = error as Error
-      console.log('error while login', err)
-      throw err
-    } finally {
-      set({ isCheckingAuth: false })
-    }
-  },
-  signup: async (user: IUser) => {
-    set({ iSigningUp: true })
-    try {
-      const res = await authAPi.signup(user)
-      set({ authUser: res.data })
-      if (res) {
-        toast.success('Đăng ký thành công')
+
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set, get) => ({
+      authUser: null,
+      accessToken: null,
+      iSigningUp: false,
+      isLoggingIn: false,
+      isUpdatingProfile: false,
+      isCheckingAuth: true,
+
+      checkAuth: async () => {
+        try {
+          const userData = await authAPI.checkAuth()
+          set({ authUser: userData })
+        } catch (error) {
+          // console.error('Error checking authentication:', error)
+          set({ authUser: null, accessToken: null })
+        } finally {
+          set({ isCheckingAuth: false })
+        }
+      },
+
+      refreshToken: async () => {
+        try {
+          const accessToken = await authAPI.refreshToken()
+          console.log('accessToken')
+          set({ accessToken })
+          return accessToken
+        } catch (error) {
+          console.error('Error refreshing token:', error)
+          set({ authUser: null, accessToken: null })
+          throw error
+        }
+      },
+
+      login: async (credentials: LoginCredentials) => {
+        set({ isLoggingIn: true })
+        try {
+          const response = await authAPI.login(credentials)
+          set({ authUser: response.user, accessToken: response.accessToken })
+        } catch (error) {
+          toast.error('Đăng nhập thất bại')
+          throw error
+        } finally {
+          set({ isLoggingIn: false })
+        }
+      },
+
+      signup: async (user: any) => {
+        set({ iSigningUp: true })
+        try {
+          const data = await authAPI.signup(user)
+          // Handle signup response if needed
+          toast.success('Đăng ký thành công')
+          return data
+        } catch (error) {
+          toast.error('Đã xảy ra lỗi khi đăng ký')
+          throw error
+        } finally {
+          set({ iSigningUp: false })
+        }
+      },
+
+      logout: async () => {
+        try {
+          await authAPI.logout()
+        } catch (error) {
+          console.error('Error during logout:', error)
+        } finally {
+          set({ authUser: null, accessToken: null })
+          toast.success('Đã đăng xuất')
+        }
       }
-    } catch (error: unknown) {
-      toast.error('Đã xảy ra lỗi khi đăng ký')
-      const err = error as Error
-      console.log('error while login', err)
-      throw err
-    } finally {
-      set({ iSigningUp: false })
+    }),
+    {
+      name: 'auth-storage',
+      partialize: (state) => ({
+        accessToken: state.accessToken,
+        authUser: state.authUser
+      })
     }
-  }
-}))
+  )
+)
