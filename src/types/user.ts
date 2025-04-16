@@ -7,7 +7,7 @@ interface IUser {
   gender: 'male' | 'female' | 'other'
   email?: string
   phone_number?: string
-  profile_picture?: string
+  avatar?: string
   created_at: Date
   updated_at: Date
 }

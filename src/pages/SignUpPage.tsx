@@ -7,7 +7,7 @@ import CommonButton from '~/components/CommonButton'
 import InputField from '~/components/InputField'
 import UnderlineLink from '~/components/UnderlineLink'
 import { signupSchema } from '~/schema/SignUpSchema'
-import authAPi from '~/services/auth'
+import authAPi from '~/services/authApi'
 type SignupInput = z.infer<typeof signupSchema>
 
 const SignUpPage: React.FC = () => {

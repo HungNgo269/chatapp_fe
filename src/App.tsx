@@ -5,15 +5,14 @@ import SignUpPage from './pages/SignUpPage'
 import { QueryClientProvider } from '@tanstack/react-query'
 import queryClient from './services/queryClient'
 import { useAuthStore } from './store/useAuthStore'
-import NavbarLayout from './layouts/NavbarLayout'
+import SideBarLayout from './layouts/SideBarLayout'
 import { useEffect } from 'react'
-import { Loader } from 'lucide-react'
 function App() {
-  const { authUser, checkAuth, isCheckingAuth } = useAuthStore()
+  const { authUser, checkAuth } = useAuthStore()
   useEffect(() => {
     checkAuth()
   }, [checkAuth])
-  console.log(authUser)
+  // import { Loader } from 'lucide-react'
   // if (isCheckingAuth && !authUser) {
   //   return (
   //     <div className='h-screen flex items-center justify-center'>
@@ -25,7 +24,7 @@ function App() {
     <>
       <QueryClientProvider client={queryClient}>
         <Routes>
-          <Route path='/' element={<NavbarLayout />}>
+          <Route path='/' element={<SideBarLayout />}>
             <Route index element={authUser ? <HomePage /> : <Navigate to='/login' />} />
           </Route>
           <Route path='/login' element={!authUser ? <LoginPage /> : <Navigate to='/' />} />

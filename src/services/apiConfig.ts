@@ -62,8 +62,11 @@ apiConfig.interceptors.response.use(
       try {
         // Try to refresh the token
         const newToken = await useAuthStore.getState().refreshToken()
+        console.log('new toekn already here', newToken)
         // If we got a new token, update the header and retry the request
         if (newToken) {
+          originalRequest.headers = originalRequest.headers || {}
+
           originalRequest.headers['Authorization'] = `Bearer ${newToken}`
 
           // Process any requests that came in while we were refreshing

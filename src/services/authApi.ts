@@ -41,7 +41,7 @@ const authAPI = {
 
   signup: async (credentials: SignupCredentials) => {
     try {
-      const response = await apiConfig.post('auth/signup', credentials, { skipAuthRefresh: true })
+      const response = await apiConfig.post('auth/signup', credentials)
       if (response.status === 201) {
         // signup trả về 201, không phải 200
         toast.success('Đăng ký thành công')

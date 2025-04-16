@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import toast from 'react-hot-toast'
 import IUser from '~/types/user'
-import authAPI from '~/services/auth'
+import authAPI from '~/services/authApi'
 
 interface LoginCredentials {
   identifier: string
@@ -35,10 +35,10 @@ export const useAuthStore = create<AuthState>()(
 
       checkAuth: async () => {
         try {
-          const userData = await authAPI.checkAuth()
-          set({ authUser: userData })
+          const authUser = await authAPI.checkAuth()
+          console.log(authUser)
+          set({ authUser: authUser })
         } catch (error) {
-          // console.error('Error checking authentication:', error)
           set({ authUser: null, accessToken: null })
         } finally {
           set({ isCheckingAuth: false })
@@ -48,8 +48,8 @@ export const useAuthStore = create<AuthState>()(
       refreshToken: async () => {
         try {
           const accessToken = await authAPI.refreshToken()
-          console.log('accessToken')
-          set({ accessToken })
+          console.log('accessToken', accessToken)
+          set({ accessToken: accessToken })
           return accessToken
         } catch (error) {
           console.error('Error refreshing token:', error)
@@ -62,6 +62,7 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoggingIn: true })
         try {
           const response = await authAPI.login(credentials)
+          console.log('responese lgin', response)
           set({ authUser: response.user, accessToken: response.accessToken })
         } catch (error) {
           toast.error('Đăng nhập thất bại')
