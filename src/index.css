@@ -8,8 +8,9 @@
   --color-secondary-black: #26303e;
   --color-dark-blue: #26303e;
   --color-input-gray: #333333;
-  --color-bg-text: #26303e;
-  --color-bg-header: #252729;
+  --color-bg: #eaeaea;
+  --color-border: #3b3b3d;
+
   --max-height-header: var(--header-height);
   --max-height-content: calc(100vh - var(--header-height));
 }

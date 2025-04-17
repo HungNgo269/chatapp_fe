@@ -33,7 +33,10 @@ const Header: React.FC<HeaderProps> = ({ propName }) => {
   ]
   const [active, setActive] = useState('Home')
   return (
-    <div className='h-(--max-height-header) w-full flex flex-row justify-between items-center '>
+    <div
+      className='h-(--max-height-header) w-full flex flex-row justify-between items-center border-b-1
+     border-(--color-border) bg-(--color-bg)'
+    >
       <div className='flex flex-row justify-start items-center'>
         {leftSideItem.map((item) => (
           <IconNavigation
