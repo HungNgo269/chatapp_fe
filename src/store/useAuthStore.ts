@@ -43,6 +43,11 @@ export const useAuthStore = create<AuthState>()(
       onlineUsers: [],
       checkAuth: async () => {
         try {
+          if (get().accessToken === null) {
+            const accessToken = await get().refreshToken()
+            console.log('new accesstoken', accessToken)
+            set({ accessToken: accessToken })
+          }
           const authUser = await authAPI.checkAuth()
           console.log(authUser)
           set({ authUser: authUser })
@@ -71,7 +76,6 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoggingIn: true })
         try {
           const response = await authAPI.login(credentials)
-          console.log('responese lgin', response)
           set({ authUser: response.user, accessToken: response.accessToken })
           get().connectSocket()
         } catch (error) {
