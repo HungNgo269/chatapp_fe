@@ -12,9 +12,7 @@ const HomePage: React.FC<HomePageProps> = ({ propName }) => {
       <div className='grid grid-cols-1 gap-6'>
         <section>
           <h2 className='text-xl font-semibold mb-4'>Chat Room</h2>
-          <div className='h-[600px]'>
-            <ChatContainer />
-          </div>
+          <div className='h-[600px]'>{/* <ChatContainer /> */}</div>
         </section>
       </div>
     </div>

@@ -3,6 +3,7 @@ import IconNavigation from '../IconNavigation'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import InputSearch from '../InputSearch'
 import ListMessage from './ListMessage'
+import { useAuthStore } from '~/store/useAuthStore'
 
 interface SideBarProps {
   propName?: string
@@ -25,7 +26,7 @@ const SideBar: React.FC<SideBarProps> = ({ propName }) => {
         <span>Hộp thư</span>
         <span>Cộng đồng </span>
       </div>
-      <ListMessage></ListMessage>
+      {/* <ListMessage></ListMessage> */}
     </div>
   )
 }

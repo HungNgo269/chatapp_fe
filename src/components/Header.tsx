@@ -10,6 +10,8 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined'
 import IconNavigation from './IconNavigation'
 import { useState } from 'react'
+import { Logout } from '@mui/icons-material'
+import { useAuthStore } from '~/store/useAuthStore'
 interface HeaderProps {
   propName?: string
 }
@@ -29,9 +31,14 @@ const Header: React.FC<HeaderProps> = ({ propName }) => {
   const rightSideItem = [
     { id: 'Menu', icon: MenuOutlinedIcon, label: 'Menu' },
     { id: 'Noti', icon: NotificationsOutlinedIcon, label: 'Noti' },
-    { id: 'Avatar', icon: AccountCircleOutlinedIcon, label: 'Avatar' }
+    { id: 'Avatar', icon: AccountCircleOutlinedIcon, label: 'Avatar' },
+    { id: 'LogOut', icon: Logout, label: 'LogOut' }
   ]
+  const { logout } = useAuthStore()
   const [active, setActive] = useState('Home')
+  const tempLogout = async () => {
+    await logout()
+  }
   return (
     <div
       className='h-(--max-height-header) w-full flex flex-row justify-between items-center border-b-1
@@ -61,7 +68,12 @@ const Header: React.FC<HeaderProps> = ({ propName }) => {
           ></IconNavigation>
         ))}
       </div>
-      <div className='flex flex-row items-center '>
+      <div
+        onClick={() => {
+          tempLogout()
+        }}
+        className='flex flex-row items-center '
+      >
         {rightSideItem.map((item) => (
           <IconNavigation
             key={item.id}

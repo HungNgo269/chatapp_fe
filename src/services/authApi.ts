@@ -72,6 +72,7 @@ const authAPI = {
   checkAuth: async () => {
     try {
       const response = await apiConfig.get('auth/check')
+      console.log(response)
       return response.data
     } catch (error: unknown) {
       const err = error as Error
