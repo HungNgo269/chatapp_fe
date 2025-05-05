@@ -1,30 +1,32 @@
-// import { useState } from 'react'
-// import ListMessageCard from './ListMessageCard'
-// import { useAuthStore } from '~/store/useAuthStore'
+import { useState } from 'react'
+import ListMessageCard from './ListMessageCard'
+import { useAuthStore } from '~/store/useAuthStore'
+import User from '~/models/User/IUser.model'
 
-// interface ListMessageProps {
-//   propName?: string
-// }
+interface ListMessageProps {
+  propName?: string
+}
 
-// const ListMessage: React.FC<ListMessageProps> = ({ propName }) => {
-//   const [active, setActive] = useState('1')
-//   const { onlineUsers, authUser } = useAuthStore()
-//   const onlineFriendList = onlineUsers.find((myself) => {
-//     return !myself._id === authUser?._id
-//   })
-//   return (
-//     <div>
-//       {onlineFriendList.map((friend) => (
-//         <ListMessageCard
-//           data={friend}
-//           onClick={() => {
-//             setActive(friend.id)
-//           }}
-//           active={active === friend.id}
-//         ></ListMessageCard>
-//       ))}
-//     </div>
-//   )
-// }
+const ListMessage: React.FC<ListMessageProps> = ({ propName }) => {
+  const [active, setActive] = useState('')
+  const { onlineUsers, authUser } = useAuthStore()
+  const onlineFriendList = onlineUsers.filter((user) => {
+    return user._id !== authUser?._id
+  })
+  console.log(onlineFriendList)
+  return (
+    <div>
+      {onlineFriendList.map((friend: User) => (
+        <ListMessageCard
+          data={friend}
+          onClick={() => {
+            setActive(friend._id)
+          }}
+          active={active === friend._id}
+        ></ListMessageCard>
+      ))}
+    </div>
+  )
+}
 
-// export default ListMessage
+export default ListMessage

@@ -1,9 +1,9 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import toast from 'react-hot-toast'
-import IUser from '~/types/user'
-import authAPI from '~/services/authApi'
+import authAPI, { SignupCredentials } from '~/services/authApi'
 import { Socket, io } from 'socket.io-client'
+import User from '~/models/User/IUser.model'
 
 // const serverURL = import.meta.env.REACT_APP_SERVER_URL
 const serverURL = 'http://localhost:8000'
@@ -13,18 +13,18 @@ interface LoginCredentials {
 }
 
 interface AuthState {
-  authUser: IUser | null
+  authUser: User | null
   accessToken: string | null
   iSigningUp: boolean
   isLoggingIn: boolean
   isUpdatingProfile: boolean
   isCheckingAuth: boolean
-  onlineUsers: IUser[]
+  onlineUsers: User[]
   socket: Socket | null
   checkAuth: () => Promise<void>
   refreshToken: () => Promise<string>
   login: (credentials: LoginCredentials) => Promise<void>
-  signup: (user: any) => Promise<void>
+  signup: (user: SignupCredentials) => Promise<void>
   logout: () => Promise<void>
   connectSocket: () => void
   disconnectSocket: () => void
@@ -86,7 +86,7 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      signup: async (user: any) => {
+      signup: async (user: SignupCredentials) => {
         set({ iSigningUp: true })
         try {
           const data = await authAPI.signup(user)

@@ -6,7 +6,7 @@ interface LoginCredentials {
   password: string
 }
 
-interface SignupCredentials {
+export interface SignupCredentials {
   first_name: string
   last_name: string
   username: string

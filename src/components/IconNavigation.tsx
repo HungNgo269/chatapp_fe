@@ -20,7 +20,7 @@ const IconNavigation: React.FC<IconNavigationProps> = ({
   return (
     <div
       className={`flex justify-center items-center 
-      ${active ? 'text-blue-600 border-b-2 border-blue-800 bg-blue-300' : 'text-gray-600 hover:bg-gray-300'}  `}
+      ${active ? 'text-blue-600 border-b-2 border-blue-800 bg-(--active-gray)' : 'text-gray-600 hover:bg-gray-300'}  `}
       onClick={onClick}
     >
       {IconSrc && <IconSrc className={`${size} ${active ? 'text-blue-600' : 'text-gray-500'}`} />}
