@@ -6,7 +6,7 @@ interface LoginCredentials {
   password: string
 }
 
-interface SignupCredentials {
+export interface SignupCredentials {
   first_name: string
   last_name: string
   username: string
@@ -41,7 +41,7 @@ const authAPI = {
 
   signup: async (credentials: SignupCredentials) => {
     try {
-      const response = await apiConfig.post('auth/signup', credentials, { skipAuthRefresh: true })
+      const response = await apiConfig.post('auth/signup', credentials)
       if (response.status === 201) {
         // signup trả về 201, không phải 200
         toast.success('Đăng ký thành công')
@@ -72,6 +72,7 @@ const authAPI = {
   checkAuth: async () => {
     try {
       const response = await apiConfig.get('auth/check')
+      console.log(response)
       return response.data
     } catch (error: unknown) {
       const err = error as Error

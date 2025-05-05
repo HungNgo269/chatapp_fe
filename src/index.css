@@ -1,1 +1,90 @@
 @import 'tailwindcss';
+/* @plugin "" */
+:root {
+  --header-height: 36px;
+  /* màu cho text thì phải, lấy từ discord */
+  --neutral-2: hsl(0 calc(1 * 0%) 98.431% /1);
+  --neutral-5: hsl(240 calc(1 * 3.226%) 93.922% /1);
+  --neutral-10: hsl(225 calc(1 * 5.882%) 86.667% /1);
+  --neutral-23: hsl(240 calc(1 * 4.294%) 68.039% /1);
+  --neutral-29: hsl(232.5 calc(1 * 3.883%) 59.608% /1);
+
+  --blurple-32: hsl(230 calc(1 * 92.308%) 74.51% /1);
+  --blurple-32-hsl: 230 calc(var(--saturation-factor, 1) * 92.308%) 74.51%;
+}
+@theme {
+  --color-primary-black: #121214;
+  --color-secondary-black: #26303e;
+  --color-dark-blue: #26303e;
+  --color-input-gray: #333333;
+  --color-bg: #eaeaea;
+  --color-border: #3b3b3d;
+
+  --max-height-header: var(--header-height);
+  --max-height-content: calc(100vh - var(--header-height));
+  --active-gray: #27262b;
+  /* background */
+  --background: var(--color-primary-black); /* text */
+  --text-brand: color-mix(
+    in oklab,
+    var(--blurple-35) 100%,
+    var(--theme-text-color, #000) var(--theme-text-color-amount, 0%)
+  );
+  --text-link: color-mix(
+    in oklab,
+    var(--blue-new-36) 100%,
+    var(--theme-text-color, #000) var(--theme-text-color-amount, 0%)
+  );
+  --text-muted: color-mix(
+    in oklab,
+    var(--neutral-29) 100%,
+    var(--theme-text-color, #000) var(--theme-text-color-amount, 0%)
+  );
+  --text-normal: color-mix(
+    in oklab,
+    var(--neutral-5) 100%,
+    var(--theme-text-color, #000) var(--theme-text-color-amount, 0%)
+  );
+  --text-positive: color-mix(
+    in oklab,
+    var(--green-new-34) 100%,
+    var(--theme-text-color, #000) var(--theme-text-color-amount, 0%)
+  );
+  --text-primary: color-mix(
+    in oklab,
+    var(--neutral-2) 100%,
+    var(--theme-text-color, #000) var(--theme-text-color-amount, 0%)
+  );
+  --text-secondary: color-mix(
+    in oklab,
+    var(--neutral-23) 100%,
+    var(--theme-text-color, #000) var(--theme-text-color-amount, 0%)
+  );
+  --text-warning: color-mix(
+    in oklab,
+    var(--yellow-new-32) 100%,
+    var(--theme-text-color, #000) var(--theme-text-color-amount, 0%)
+  );
+  /* icon */
+  --icon-default: color-mix(
+    in oklab,
+    var(--neutral-10) 100%,
+    var(--theme-text-color, #000) var(--theme-text-color-amount, 0%)
+  );
+  --icon-hover: color-mix(
+    in oklab,
+    var(--neutral-29) 100%,
+    var(--theme-text-color, #000) var(--theme-text-color-amount, 0%)
+  );
+  /* unclear */
+  --interactive-hover: color-mix(
+    in oklab,
+    var(--neutral-2) 100%,
+    var(--theme-text-color, #000) var(--theme-text-color-amount, 0%)
+  );
+  --interactive-normal: color-mix(
+    in oklab,
+    var(--neutral-23) 100%,
+    var(--theme-text-color, #000) var(--theme-text-color-amount, 0%)
+  );
+}

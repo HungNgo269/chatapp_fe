@@ -20,7 +20,7 @@ const signupSchema = z.object({
   identifier: z.union([emailSchema, phoneSchema], {
     errorMap: () => ({ message: 'Please enter a valid email or phone number' })
   }),
-  profile_picture: z.string().url({ message: 'Profile picture must be a valid URL' }).optional()
+  avatar: z.string().url({ message: 'Profile picture must be a valid URL' }).optional()
 })
 
 export { signupSchema }
