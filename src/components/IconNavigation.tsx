@@ -15,7 +15,8 @@ const IconNavigation: React.FC<IconNavigationProps> = ({
   active = false,
   color,
   onClick,
-  label
+  label,
+  children
 }) => {
   return (
     <div
@@ -24,6 +25,7 @@ const IconNavigation: React.FC<IconNavigationProps> = ({
       onClick={onClick}
     >
       {IconSrc && <IconSrc className={`${size} ${active ? 'text-blue-600' : 'text-gray-500'}`} />}
+      {children}
     </div>
   )
 }

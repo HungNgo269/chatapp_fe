@@ -17,7 +17,9 @@ const SideBarGroup: React.FC<SideBarGroupProps> = ({ propName }) => {
     <div className='flex flex-col'>
       <h1>propName</h1>
       {images.map((item) => (
-        <Icon key={item.id} size='size-10' IconSrc={item.img} />
+        <div className=' rounded-2xl'>
+          <Icon key={item.id} size='size-10' IconSrc={item.img} />
+        </div>
       ))}
     </div>
   )

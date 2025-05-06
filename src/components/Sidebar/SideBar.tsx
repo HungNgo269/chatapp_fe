@@ -1,30 +1,48 @@
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
-import IconNavigation from '../IconNavigation'
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
-import InputSearch from '../InputSearch'
 import ListMessage from './ListMessage'
+import NavigationButton from '../NavigationButton'
+import message from '~/assets/image/icon/message-pending-svgrepo-com.svg'
+import Icon from '../Icon'
 
 interface SideBarProps {
   propName?: string
 }
+
+const images = [
+  { id: 1, img: message },
+  { id: 2, img: message },
+  { id: 3, img: message },
+  { id: 4, img: message },
+  { id: 5, img: message }
+]
+
 const SideBar: React.FC<SideBarProps> = ({ propName }) => {
   return (
     <div
       className='flex flex-col justify-start w-24 md:w-[360px]  border-r-1
-     border-(--color-border) text-(--) '
+     border-(--color-border)  '
     >
       <div className='flex flex-row justify-between items-center'>
-        <h1>Đoạn chat</h1>
-        <div className='flex flex-row justify-between items-center'>
-          <IconNavigation IconSrc={MoreHorizIcon}></IconNavigation>
-          <IconNavigation IconSrc={EditOutlinedIcon}></IconNavigation>
-        </div>
+        <span>Tìm hoặc bắt đầu cuộc trò chuyện</span>
       </div>
-      <InputSearch></InputSearch>
-      <div>
-        <span>Tin nhắn trực tiếp</span>
+      <div className='flex flex-col  justify-center items-center w-full h-fit'>
+        <NavigationButton>
+          <Icon IconSrc={images[0].img} size='size-5'></Icon>
+          <span> Bạn bè</span>
+        </NavigationButton>
+        <NavigationButton>
+          <Icon IconSrc={images[0].img} size='size-5'></Icon>
+
+          <span> Nitro</span>
+        </NavigationButton>
+        <NavigationButton>
+          <Icon IconSrc={images[0].img} size='size-5'></Icon>
+
+          <span> Cửa hàng</span>
+        </NavigationButton>
       </div>
-      <ListMessage></ListMessage>
+      <div className='flex flex-col  justify-center items-center w-full'>
+        <span className='flex flex-row justify-start text-sm'>Tin nhắn trực tiếp</span>
+      </div>
     </div>
   )
 }

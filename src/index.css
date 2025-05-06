@@ -87,4 +87,14 @@
     var(--neutral-23) 100%,
     var(--theme-text-color, #000) var(--theme-text-color-amount, 0%)
   );
+  --header-primary: color-mix(
+    in oklab,
+    var(--neutral-2) 100%,
+    var(--theme-text-color, #000) var(--theme-text-color-amount, 0%)
+  );
+  --header-secondary: color-mix(
+    in oklab,
+    var(--neutral-5) 100%,
+    var(--theme-text-color, #000) var(--theme-text-color-amount, 0%)
+  );
 }

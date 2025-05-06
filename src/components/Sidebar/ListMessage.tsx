@@ -15,7 +15,7 @@ const ListMessage: React.FC<ListMessageProps> = ({ propName }) => {
   })
   console.log(onlineFriendList)
   return (
-    <div>
+    <div className='w-full'>
       {onlineFriendList.map((friend: User) => (
         <ListMessageCard
           data={friend}

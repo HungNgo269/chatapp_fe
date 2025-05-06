@@ -1,19 +1,68 @@
-import ChatContainer from '~/components/chat/ChatContainer'
+import { useState } from 'react'
+import Button from '~/components/Button'
+import ListMessage from '~/components/Sidebar/ListMessage'
 
 interface HomePageProps {
   propName?: string
 }
 
 const HomePage: React.FC<HomePageProps> = ({ propName }) => {
-  return (
-    <div className='container mx-auto px-4 py-8'>
-      <h1 className='text-2xl font-bold mb-6'>Trang Chủ</h1>
+  const [activeButton, setActiveButton] = useState<string>('online')
+  const [searchQuery, setSearchQuery] = useState<string>('')
 
-      <div className='grid grid-cols-1 gap-6'>
-        <section>
-          <h2 className='text-xl font-semibold mb-4'>Chat Room</h2>
-          <div className='h-[600px]'>{/* <ChatContainer /> */}</div>
-        </section>
+  const handleButtonClick = (filter: string) => {
+    setActiveButton(filter)
+  }
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value)
+  }
+
+  return (
+    <div className='flex flex-col justify-start items-start gap-4 rounded p-4 w-[100%]'>
+      <div className='flex flex-row justify-start items-center gap-4 rounded'>
+        <span className='text-lg font-semibold'>Bạn bè</span>
+        <Button active={activeButton === 'online'} onClick={() => handleButtonClick('online')}>
+          Trực tuyến
+        </Button>
+        <Button active={activeButton === 'all'} onClick={() => handleButtonClick('all')}>
+          Tất cả
+        </Button>
+        <Button active={activeButton === 'addFriend'} onClick={() => handleButtonClick('addFriend')}>
+          Thêm bạn
+        </Button>
+      </div>
+      <input
+        type='search'
+        placeholder='Tìm kiếm bạn bè...'
+        value={searchQuery}
+        onChange={handleSearchChange}
+        className='w-full p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-300'
+      />
+      <div className='w-full'>
+        {activeButton === 'online' && (
+          <div className='mx-4 my-4'>
+            <h3 className='text-gray-500 text-sm font-medium'>
+              Bạn bè trực tuyến - {searchQuery ? 'Đang tìm kiếm' : '??'}
+            </h3>
+            <ListMessage filter='online' searchQuery={searchQuery} />
+          </div>
+        )}
+        {activeButton === 'all' && (
+          <div className='mx-4 my-4'>
+            <h3 className='text-gray-500 text-sm font-medium'>
+              Tất cả bạn bè - {searchQuery ? 'Đang tìm kiếm' : '??'}
+            </h3>
+            <ListMessage filter='all' searchQuery={searchQuery} />
+          </div>
+        )}
+        {activeButton === 'addFriend' && (
+          <div className='mx-4 my-4'>
+            <h3 className='text-gray-500 text-sm font-medium'>Thêm bạn mới</h3>
+            <p className='text-gray-600'>Chức năng thêm bạn đang phát triển...</p>
+            {/* Có thể thêm form hoặc logic thêm bạn ở đây */}
+          </div>
+        )}
       </div>
     </div>
   )
