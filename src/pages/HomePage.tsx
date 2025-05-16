@@ -19,7 +19,7 @@ const HomePage: React.FC<HomePageProps> = ({ propName }) => {
   }
 
   return (
-    <div className='flex flex-col justify-start items-start gap-4 rounded p-4 w-[100%]'>
+    <div className='flex flex-col justify-start items-start gap-4 rounded p-4 '>
       <div className='flex flex-row justify-start items-center gap-4 rounded'>
         <span className='text-lg font-semibold'>Bạn bè</span>
         <Button active={activeButton === 'online'} onClick={() => handleButtonClick('online')}>
@@ -41,24 +41,24 @@ const HomePage: React.FC<HomePageProps> = ({ propName }) => {
       />
       <div className='w-full'>
         {activeButton === 'online' && (
-          <div className='mx-4 my-4'>
-            <h3 className='text-gray-500 text-sm font-medium'>
+          <div className=''>
+            <h3 className='text-gray-500 text-sm font-medium mx-4 my-4'>
               Bạn bè trực tuyến - {searchQuery ? 'Đang tìm kiếm' : '??'}
             </h3>
             <ListMessage filter='online' searchQuery={searchQuery} />
           </div>
         )}
         {activeButton === 'all' && (
-          <div className='mx-4 my-4'>
-            <h3 className='text-gray-500 text-sm font-medium'>
+          <div className=''>
+            <h3 className='text-gray-500 text-sm font-medium mx-4 my-4'>
               Tất cả bạn bè - {searchQuery ? 'Đang tìm kiếm' : '??'}
             </h3>
             <ListMessage filter='all' searchQuery={searchQuery} />
           </div>
         )}
         {activeButton === 'addFriend' && (
-          <div className='mx-4 my-4'>
-            <h3 className='text-gray-500 text-sm font-medium'>Thêm bạn mới</h3>
+          <div className=''>
+            <h3 className='text-gray-500 text-sm font-medium mx-4 my-4'>Thêm bạn mới</h3>
             <p className='text-gray-600'>Chức năng thêm bạn đang phát triển...</p>
             {/* Có thể thêm form hoặc logic thêm bạn ở đây */}
           </div>

@@ -1,30 +1,40 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ListMessageCard from './ListMessageCard'
-import { useAuthStore } from '~/store/useAuthStore'
 import User from '~/models/User/IUser.model'
-
+import { useNavigate } from 'react-router-dom'
+import { useChatStore } from '~/store/useChatStore'
 interface ListMessageProps {
-  propName?: string
+  props: string
 }
 
-const ListMessage: React.FC<ListMessageProps> = ({ propName }) => {
+const ListMessage: React.FC<ListMessageProps> = ({}) => {
+  const { users, getUser } = useChatStore()
+  const onlineUsers = users.filter((user) => user.status === 'online')
+  console.log('onlineUsers', onlineUsers)
   const [active, setActive] = useState('')
-  const { onlineUsers, authUser } = useAuthStore()
-  const onlineFriendList = onlineUsers.filter((user) => {
-    return user._id !== authUser?._id
-  })
-  console.log(onlineFriendList)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    getUser()
+  }, [getUser])
+
+  const handleOnclick = (id: string) => {
+    setActive(id)
+    navigate(`channels/@me/${id}`)
+  }
+
   return (
     <div className='w-full'>
-      {onlineFriendList.map((friend: User) => (
-        <ListMessageCard
-          data={friend}
-          onClick={() => {
-            setActive(friend._id)
-          }}
-          active={active === friend._id}
-        ></ListMessageCard>
-      ))}
+      {Array.isArray(onlineUsers) && onlineUsers.length > 0
+        ? onlineUsers.map((friend: User) => (
+            <ListMessageCard
+              key={friend._id}
+              data={friend}
+              onClick={() => handleOnclick(friend._id)}
+              active={active === friend._id}
+            />
+          ))
+        : 'Không có ai đang online cả'}
     </div>
   )
 }

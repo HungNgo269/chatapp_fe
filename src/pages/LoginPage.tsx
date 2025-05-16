@@ -9,6 +9,7 @@ import UnderlineLink from '~/components/UnderlineLink'
 import InputField from '~/components/InputField'
 import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '~/store/useAuthStore'
+import { useChatStore } from '~/store/useChatStore'
 type LoginInput = z.infer<typeof loginSchema>
 
 const LoginPage = () => {
@@ -27,12 +28,15 @@ const LoginPage = () => {
   const navigate = useNavigate()
   const [loginError, setLoginError] = useState<string | null>(null)
   const login = useAuthStore((state) => state.login)
+  const iniFriendList = useChatStore((state) => state.getUser)
   const onSubmit = async (data: LoginInput) => {
     try {
       const response = await login(data)
+      await iniFriendList()
       console.log(response)
       if (response) {
         console.log('Đăng nhập thành công:', data)
+
         navigate('/')
       }
     } catch (error: unknown) {

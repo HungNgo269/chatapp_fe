@@ -5,7 +5,7 @@ import SideBarGroup from '~/components/Sidebar/SideBarGroup'
 
 const SideBarLayout = () => {
   return (
-    <div className='min-h-screen min-w-screen flex flex-col bg-(--background) text-(--text-normal)  text-base/normal '>
+    <div className='min-h-screen min-w-screen flex flex-col bg-(--background) text-(--text-normal)  text-base/normal overflow-y-hidden'>
       <Header></Header>
       <div className='flex justify-start relative h-(--max-height-content) '>
         <SideBarGroup></SideBarGroup>

@@ -15,11 +15,12 @@ interface LoginCredentials {
 interface AuthState {
   authUser: User | null
   accessToken: string | null
-  iSigningUp: boolean
+  isSigningUp: boolean
   isLoggingIn: boolean
   isUpdatingProfile: boolean
   isCheckingAuth: boolean
   onlineUsers: User[]
+  status: 'online' | 'offline' | 'banned'
   socket: Socket | null
   checkAuth: () => Promise<void>
   refreshToken: () => Promise<string>
@@ -35,10 +36,11 @@ export const useAuthStore = create<AuthState>()(
     (set, get) => ({
       authUser: null,
       accessToken: null,
-      iSigningUp: false,
+      isSigningUp: false,
       isLoggingIn: false,
       isUpdatingProfile: false,
       isCheckingAuth: true,
+      status: 'offline',
       socket: null,
       onlineUsers: [],
       checkAuth: async () => {
@@ -50,9 +52,11 @@ export const useAuthStore = create<AuthState>()(
           }
           const authUser = await authAPI.checkAuth()
           console.log(authUser)
-          set({ authUser: authUser })
+          set({ authUser: authUser, status: 'online' })
           get().connectSocket()
-        } catch (error) {
+        } catch (error: unknown) {
+          const err = error as Error
+          console.log(err.message)
           set({ authUser: null, accessToken: null })
         } finally {
           set({ isCheckingAuth: false })
@@ -76,7 +80,8 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoggingIn: true })
         try {
           const response = await authAPI.login(credentials)
-          set({ authUser: response.user, accessToken: response.accessToken })
+
+          set({ authUser: response.user, accessToken: response.accessToken, status: 'online' })
           get().connectSocket()
         } catch (error) {
           toast.error('Đăng nhập thất bại')
@@ -87,7 +92,7 @@ export const useAuthStore = create<AuthState>()(
       },
 
       signup: async (user: SignupCredentials) => {
-        set({ iSigningUp: true })
+        set({ isSigningUp: true })
         try {
           const data = await authAPI.signup(user)
           toast.success('Đăng ký thành công')
@@ -98,7 +103,7 @@ export const useAuthStore = create<AuthState>()(
           toast.error('Đã xảy ra lỗi khi đăng ký')
           throw error
         } finally {
-          set({ iSigningUp: false })
+          set({ isSigningUp: false })
         }
       },
 
@@ -111,7 +116,7 @@ export const useAuthStore = create<AuthState>()(
         } catch (error) {
           console.error('Error during logout:', error)
         } finally {
-          set({ authUser: null, accessToken: null })
+          set({ authUser: null, accessToken: null, status: 'offline' })
           toast.success('Đã đăng xuất')
         }
       },
@@ -127,11 +132,13 @@ export const useAuthStore = create<AuthState>()(
         newSocket.connect()
         set({ socket: newSocket })
 
-        newSocket.on('connection', () => {
+        newSocket.on('connect', () => {
+          newSocket.emit('setOnline', authUser._id)
           console.log('Socket connected:', newSocket.id)
         })
 
         newSocket.on('disconnect', () => {
+          newSocket.emit('setOffline', authUser._id)
           console.log('Socket disconnected')
         })
         newSocket.on('getOnlineUsers', (userIds) => {

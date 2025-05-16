@@ -7,6 +7,7 @@ import queryClient from './services/queryClient'
 import { useAuthStore } from './store/useAuthStore'
 import SideBarLayout from './layouts/SideBarLayout'
 import { useEffect } from 'react'
+import ChatPage from './pages/ChatPage'
 function App() {
   const { authUser, checkAuth } = useAuthStore()
   useEffect(() => {
@@ -26,6 +27,9 @@ function App() {
         <Routes>
           <Route path='/' element={<SideBarLayout />}>
             <Route index element={authUser ? <HomePage /> : <Navigate to='/login' />} />
+          </Route>
+          <Route path='channels/@me/:id' element={<SideBarLayout />}>
+            <Route index element={authUser ? <ChatPage /> : <Navigate to='/login' />} />
           </Route>
           <Route path='/login' element={!authUser ? <LoginPage /> : <Navigate to='/' />} />
           <Route path='/signup' element={!authUser ? <SignUpPage /> : <Navigate to='/' />} />
